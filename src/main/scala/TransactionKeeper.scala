@@ -13,12 +13,14 @@ import org.json4s.jackson.JsonMethods._
 
 class TransactionKeeper extends Actor {
 
-  var chain: Chain = new Chain()
-
-  def receive(): PartialFunction[Any, Unit] = {
-    case String => "Do some work"
+  def receive() = {
+    case String => {
+      val t = Transaction
+      println(t)
+    }
+    //chain = chain.copy(blocks = chain.blocks :: new Block())
     case GiveWholeChain =>
-    case GiveLastBlock => sender() ! chain.blocks.last
+    //case GiveLastBlock => sender() ! chain.blocks.last
     case _ =>
   }
 
