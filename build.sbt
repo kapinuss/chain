@@ -12,10 +12,6 @@ libraryDependencies ++= {
     "com.typesafe.akka" %% "akka-actor" % akkaV,
     "com.typesafe.akka" %% "akka-http" % akkaHttpV,
     "com.typesafe.akka" %% "akka-stream" % akkaV,
-    "org.scalikejdbc" %% "scalikejdbc"       % "3.2.2",
-    "ch.qos.logback"  %  "logback-classic"   % "1.2.3",
-    "org.postgresql" % "postgresql" % "42.1.4",
-    "org.json4s" %% "json4s-jackson" % "3.5.3",
-    "org.scala-lang.modules" %% "scala-xml" % "1.0.6"
+    "org.json4s" % "json4s-jackson_2.12" % "3.6.0-M2"
   )
 }
