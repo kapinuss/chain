@@ -13,12 +13,18 @@ import org.json4s.jackson.JsonMethods._
 
 class TransactionKeeper extends Actor {
 
+  var transactions: List[Transaction] = List.empty[Transaction]
+
   def receive() = {
-    case String => {
-      val t = Transaction
+    case s: String => {
+      val t = Transaction()
       println(t)
+      self ! t
     }
-    //chain = chain.copy(blocks = chain.blocks :: new Block())
+    case t: Transaction => {
+      transactions = transactions.+:(t)
+    println(transactions)
+    }
     case GiveWholeChain =>
     //case GiveLastBlock => sender() ! chain.blocks.last
     case _ =>

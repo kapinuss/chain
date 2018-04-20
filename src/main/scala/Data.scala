@@ -1,6 +1,6 @@
 case class Transaction(size: Int, fee: Int, gist: String)
 object Transaction {
-  def apply(fee: Int, gist: String): Transaction = {
+  def apply(): Transaction = {
     val random = scala.util.Random
     val size = random.nextInt(100)
     val fee = random.nextInt(1000)
@@ -11,7 +11,7 @@ object Transaction {
 
 case class Block(hash: String, transactions: List[Transaction])
 
-case class Chain(title: String, blocks: List[Block])
+case class BlockChain(title: String, blocks: List[Block])
 
 sealed trait ChainMessage
 
