@@ -1,18 +1,19 @@
 import akka.actor.Actor
-import Chain.miner
+import Chain.{system, miner}
 
 class ChainKeeper extends Actor {
 
   val initialBlock = Block("0", List.empty[Transaction])
 
-  var chain = List(initialBlock)
+  var chain: List[Block] = List(initialBlock)
 
   def receive: Receive = {
-    case String => sender ! chain
+    case s: String => sender ! chain
     case block: Block => {
+      system.log.info("New block is received. Current state of chain presented to successful miner.")
       chain = block :: chain
-      chain.foreach(println)
-      miner ! chain
+      println(chain)
+      sender ! chain
     }
   }
 }

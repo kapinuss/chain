@@ -19,6 +19,7 @@ object Chain {
 
   val transactionKeeper: ActorRef = system.actorOf(Props[TransactionKeeper], "transactionKeeper")
   val miner: ActorRef = system.actorOf(Props[Miner], "miner")
+  val chainKeeper: ActorRef = system.actorOf(Props[ChainKeeper], "chainKeeper")
 
   def main(args: Array[String]): Unit = {
     system.log.info("App started.")
