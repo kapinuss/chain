@@ -18,19 +18,13 @@ object Chain {
   implicit val context: ExecutionContextExecutor = system.dispatcher
 
   val transactionKeeper: ActorRef = system.actorOf(Props[TransactionKeeper], "transactionKeeper")
-
-  system.scheduler.schedule(3 seconds, 60 seconds) {
-    doWithScheduler()
-  }
+  val miner: ActorRef = system.actorOf(Props[Miner], "miner")
 
   def main(args: Array[String]): Unit = {
     system.log.info("App started.")
   }
 
-  def doWithScheduler(): Unit = {
-    println("Request for new transaction.")
-    transactionKeeper ! "Make new transaction!"
-  }
+
 
 
 }
