@@ -4,14 +4,16 @@ object Transaction {
     val random = scala.util.Random
     val size = random.nextInt(100)
     val fee = random.nextInt(1000)
-    val gist = (for (i <- 0 to 256) yield random.nextPrintableChar).mkString
+    val gist = (for (i <- 0 to 10) yield random.nextPrintableChar).mkString
     new Transaction(size, fee, gist)
   }
 }
 
-case class Block(hash: String, transactions: List[Transaction])
+case class Block(hash: String, transactions: List[Transaction]) {
+  def apply(hash: String, transactions: List[Transaction]): Block = new Block(hash, transactions)
+}
 
-case class BlockChain(title: String, blocks: List[Block])
+case class BlockChain(blocks: List[Block])
 
 sealed trait ChainMessage
 

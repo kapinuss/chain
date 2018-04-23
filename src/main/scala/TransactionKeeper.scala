@@ -15,7 +15,7 @@ class TransactionKeeper extends Actor {
 
   var transactions: List[Transaction] = List.empty[Transaction]
 
-  def receive() = {
+  def receive(): PartialFunction[Any, Unit] = {
     case s: String => {
       val t = Transaction()
       println(t)

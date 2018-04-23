@@ -24,11 +24,11 @@ object Chain {
   }
 
   def main(args: Array[String]): Unit = {
-    system.log.info("hello")
+    system.log.info("App started.")
   }
 
   def doWithScheduler(): Unit = {
-    println("tick")
+    println("Request for new transaction.")
     transactionKeeper ! "Make new transaction!"
   }
 
