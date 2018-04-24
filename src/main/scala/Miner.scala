@@ -19,9 +19,22 @@ class Miner extends Actor {
       system.log.info(s"Updated chain on a Miner: ${chain.size} blocks.")
     }
     case transactions: List[Transaction] => {
+      worker ! transactions
+      //Алгоритм сортировки транзакций по fee, нет проброса в воркера
+      /*
       val (block, chainedTransactions) = buildBlockWithOrdering(transactions)
       system.log.info("Miner built a block: " + block)
       transactionKeeper ! chainedTransactions
+      chainKeeper ! block
+      */
+    }
+    //Проброс транзакций в воркера, алгоритм перебора всех комбинаций транзакций
+    //TODO распараллелить воркеров, сделать роутер
+    case transactions: (Set[Transaction], Int, Int) => {
+      val t = transactions._1.toList
+      val block = buildSimpleBlock(t, transactions._2)
+      system.log.info("Miner built a block: " + block)
+      transactionKeeper ! t
       chainKeeper ! block
     }
   }
@@ -36,9 +49,7 @@ class Miner extends Actor {
     var sum = 0
     val sortedTransactions = transactions.sortWith( (x,y) => (x.fee / x.size) >= (y.fee / y.size))
     val sortedReducedTransactions = sortedTransactions.takeWhile(each => {sum += each.size; sum < 100} )
-    sortedReducedTransactions.foreach(println)
     val size = sortedReducedTransactions.map(_.size).sum
-    sortedReducedTransactions.foreach(println)
     (buildSimpleBlock(sortedReducedTransactions, size), sortedReducedTransactions)
   }
 

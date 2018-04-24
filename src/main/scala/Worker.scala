@@ -8,11 +8,11 @@ class Worker extends Actor {
     case _ =>
   }
 
-  def doSomeWork(transactionSets: List[Transaction]): List[Transaction] = {
+  def doSomeWork(transactionSets: List[Transaction]): (Set[Transaction], Int, Int) = {
     val subSets: List[Set[Transaction]] = transactionSets.toSet.subsets.toList
     val result: (Set[Transaction], Int, Int) = subSets.map(each => (each, each.map(t => t.size).sum, each.map(t => t.fee).sum))
       .filter(_._2 <= 100).maxBy(_._3)
     system.log.info("Best set of transactions for a block: " + result)
-    result._1.toList
+    result
   }
 }

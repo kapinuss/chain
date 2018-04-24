@@ -18,7 +18,6 @@ class TransactionKeeper extends Actor {
     case GimmeNew => sender ! transactions
     case t: Transaction => {
       transactions = t +: transactions
-      worker ! transactions
       printTransactions(t)
     }
     case chainedTransactions: List[Transaction] => {
