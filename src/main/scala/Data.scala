@@ -1,9 +1,10 @@
 case class Transaction(size: Int, fee: Int, gist: String)
 object Transaction {
+  def apply(size: Int, fee: Int, gist: String = "Root"): Transaction = new Transaction(size, fee, gist)
   def apply(): Transaction = {
     val random = scala.util.Random
-    val size = random.nextInt(100)
-    val fee = random.nextInt(1000)
+    val size = random.nextInt(99) + 1
+    val fee = random.nextInt(999) + 1
     val gist = (for (i <- 0 to 10) yield random.nextPrintableChar).mkString
     new Transaction(size, fee, gist)
   }

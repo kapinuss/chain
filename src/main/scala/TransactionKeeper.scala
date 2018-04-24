@@ -13,17 +13,16 @@ class TransactionKeeper extends Actor {
 
   def receive(): PartialFunction[Any, Unit] = {
     case Produce => {
-      system.log.info("Making new transaction.")
       self ! Transaction()
     }
     case GimmeNew => sender ! transactions
     case t: Transaction => {
       transactions = t +: transactions
-      system.log.info("Transactions after adding a new one: " + transactions)
+      system.log.info("TransactionKeeper made a new transaction: " + t)
     }
     case chainedTransactions: List[Transaction] => {
       transactions = transactions diff chainedTransactions
-      println("Transactions after new block: " + transactions)
+      system.log.info("Transactions after new block: " + transactions.size)
     }
     case _ =>
   }
