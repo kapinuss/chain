@@ -1,9 +1,9 @@
 import akka.actor.Actor
-import Chain.{system, miner}
+import Chain._
 
 class ChainKeeper extends Actor {
 
-  val initialBlock = Block("0", List(Transaction(1, 0)))
+  val initialBlock = Block("0", 0, List(Transaction(1, 0)))
 
   var chain: BlockChain = BlockChain(List(initialBlock))
 

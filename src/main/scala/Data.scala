@@ -10,8 +10,8 @@ object Transaction {
   }
 }
 
-case class Block(hash: String, transactions: List[Transaction]) {
-  def apply(hash: String, transactions: List[Transaction]): Block = new Block(hash, transactions)
+case class Block(hash: String, size: Int, transactions: List[Transaction]) {
+  def apply(hash: String, size: Int, transactions: List[Transaction]): Block = Block(hash, size, transactions)
 }
 
 case class BlockChain(blocks: List[Block])

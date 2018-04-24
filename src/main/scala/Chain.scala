@@ -10,6 +10,7 @@ object Chain {
 
   val transactionKeeper: ActorRef = system.actorOf(Props[TransactionKeeper], "transactionKeeper")
   val miner: ActorRef = system.actorOf(Props[Miner], "miner")
+  val worker: ActorRef = system.actorOf(Props[Worker], "worker")
   val chainKeeper: ActorRef = system.actorOf(Props[ChainKeeper], "chainKeeper")
 
   def main(args: Array[String]): Unit = {
