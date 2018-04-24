@@ -12,7 +12,7 @@ class ChainKeeper extends Actor {
     case block: Block => {
       chain = BlockChain(block :: chain.blocks)
       system.log.info("New block is received. Current state of chain on ChainKeeper: ")
-      chain.blocks.foreach(println)
+      chain.blocks.foreach(block => system.log.info(block.toString))
       sender ! chain
     }
   }
