@@ -1,24 +1,43 @@
-import Chain.{system, chainKeeper}
+import Chain._
 import akka.actor.Actor
+import scala.concurrent.duration._
 import java.security.MessageDigest
 import java.math.BigInteger
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class Miner extends Actor {
+
+  system.scheduler.schedule(3 seconds, 30 seconds) {
+    transactionKeeper ! GimmeNew
+  }
 
   var chain = List.empty[Block]
 
   def receive: Receive = {
     case transactions: List[Transaction] => {
       system.log.info(s"Miner has transactions: ${transactions.toString}.")
-      val block = buildSimpleBlock(transactions)
-      println(block)
+      val block = buildBlockWithOrdering(transactions)
+      println("Miner made a block: " + block)
+      transactionKeeper ! transactions
       //chainKeeper ! block
     }
   }
 
+  def hash(string: String): String = String.
+    format("%032x", new BigInteger(1, MessageDigest.getInstance("SHA-256").digest(string.getBytes("UTF-8"))))
+
   def buildSimpleBlock(transactions: List[Transaction]): Block = {
-    def hash(string: String) = String.format("%032x", new BigInteger(1, MessageDigest.getInstance("SHA-256").digest(string.getBytes("UTF-8"))))
     Block(hash(chain.toString), transactions)
+  }
+
+  def buildBlockWithOrdering(transactions: List[Transaction]): Block = {
+    val sortedTransactions = transactions.sortWith(_.fee >= _.fee)
+    println("----------------------")
+    transactions.foreach(println)
+    println("----------------------")
+    sortedTransactions.foreach(println)
+    println("----------------------")
+    Block(hash(chain.toString), sortedTransactions)
   }
 
 }

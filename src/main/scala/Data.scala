@@ -21,4 +21,8 @@ final case object GiveWholeChain extends ChainMessage
 
 final case object GiveLastBlock extends ChainMessage
 
+final case object Produce extends ChainMessage
+
+final case object GimmeNew extends ChainMessage
+
 

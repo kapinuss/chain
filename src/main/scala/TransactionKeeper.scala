@@ -15,17 +15,23 @@ class TransactionKeeper extends Actor {
   var transactions: List[Transaction] = List.empty[Transaction]
 
   system.scheduler.schedule(3 seconds, 10 seconds) {
-    self ! "Make new transaction!"
+    self ! Produce
   }
 
   def receive(): PartialFunction[Any, Unit] = {
-    case s: String => {
+    case Produce => {
       system.log.info("Making new transaction.")
       self ! Transaction()
     }
+    case GimmeNew => sender ! transactions
     case t: Transaction => {
-      transactions = transactions.+:(t)
-      miner ! transactions
+      transactions = t +: transactions
+      println(transactions)
+      //miner ! transactions
+    }
+    case chainedtransactions: List[Transaction] => {
+      transactions = transactions diff chainedtransactions
+      println("Transactions after new block: " + transactions)
     }
     case GiveWholeChain =>
     case _ =>
