@@ -7,19 +7,23 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class Miner extends Actor {
 
-  system.scheduler.schedule(3 seconds, 30 seconds) {
+  system.scheduler.schedule(12 seconds, 30 seconds) {
     transactionKeeper ! GimmeNew
   }
 
   var chain = List.empty[Block]
 
   def receive: Receive = {
+    case updatedChain: BlockChain => {
+      chain = updatedChain.blocks
+      system.log.info(s"Updated the chain on a Miner: ${chain.toString}.")
+    }
     case transactions: List[Transaction] => {
       system.log.info(s"Miner has transactions: ${transactions.toString}.")
-      val block = buildBlockWithOrdering(transactions)
-      println("Miner made a block: " + block)
+      val block: Block = buildBlockWithOrdering(transactions)
+      println("Miner built a block: " + block)
       transactionKeeper ! transactions
-      //chainKeeper ! block
+      chainKeeper ! block
     }
   }
 
@@ -31,13 +35,13 @@ class Miner extends Actor {
   }
 
   def buildBlockWithOrdering(transactions: List[Transaction]): Block = {
-    val sortedTransactions = transactions.sortWith(_.fee >= _.fee)
+    val sortedTransactions = transactions.sortWith( (x,y) => (x.fee / x.size) >= (y.fee / y.size))
     println("----------------------")
     transactions.foreach(println)
     println("----------------------")
     sortedTransactions.foreach(println)
     println("----------------------")
-    Block(hash(chain.toString), sortedTransactions)
+    buildSimpleBlock(sortedTransactions)
   }
 
 }

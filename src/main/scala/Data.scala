@@ -17,7 +17,7 @@ case class BlockChain(blocks: List[Block])
 
 sealed trait ChainMessage
 
-final case object GiveWholeChain extends ChainMessage
+final case object GimmeChain extends ChainMessage
 
 final case object GiveLastBlock extends ChainMessage
 
