@@ -7,7 +7,7 @@ class TransactionKeeper extends Actor {
 
   var transactions: List[Transaction] = List.empty[Transaction]
 
-  system.scheduler.schedule(3 seconds, 10 seconds) {
+  system.scheduler.schedule(3 seconds, 5 seconds) {
     self ! Produce
   }
 
